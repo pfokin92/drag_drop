@@ -20,14 +20,20 @@ export default class Logic {
     e.preventDefault();
     if (this.gui.input.classList.contains('hidden')) {
       this.gui.input.classList.remove('hidden');
+      this.gui.select.classList.remove('hidden');
     } else if (this.gui.input.value.length === 0) {
       // eslint-disable-next-line no-alert
       alert('Please, write title task');
+    } else if (this.gui.select.value.length === 0) {
+      // eslint-disable-next-line no-alert
+      alert('Please, write status task');
     } else {
-      this.el = this.gui.createTask(this.gui.input.value);
+      this.el = this.gui.createTask(this.gui.input.value, this.gui.select.value);
       this.gui.input.value = '';
+      this.gui.select.value = '';
       this.addEvent(this.el);
       this.gui.input.classList.add('hidden');
+      this.gui.select.classList.add('hidden');
       localStorage.dragNdrops = JSON.stringify(this.gui.getTasksListObjFromDom());
     }
   }

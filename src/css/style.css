@@ -27,19 +27,20 @@
     border: 1px solid #999;
     padding: 10px;
     margin-bottom: 7px;
-    cursor: pointer;
+    background-color: aliceblue;
     border-radius: 10px;
     position: relative;
+    cursor: grabbing;
 }
 
 
 .dragged {
+    list-style-type: none;
     width: 240px;
     border-radius: 10px;
     position: absolute;
     z-index: 999;
     pointer-events: none;
-    background: #fff;
 }
 
 .form {
@@ -50,6 +51,17 @@
 
 .input {
     height: 50px;
+    margin-bottom: 10px;
+}
+
+.select{
+    border: 2px solid #999; 
+    border-radius: 3px; 
+    box-shadow: 0 0 5px #999; 
+    color: #111; 
+    font-size: 15px; 
+    padding: 10px; 
+    width: 200px; 
     margin-bottom: 10px;
 }
 

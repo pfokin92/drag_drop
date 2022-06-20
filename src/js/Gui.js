@@ -4,13 +4,14 @@ export default class Gui {
     this.itemsAll = document.querySelectorAll('.items');
     this.cols = document.querySelectorAll('.column');
     this.input = document.querySelector('.input');
-    this.todo = document.querySelector('.todo');
+    // this.todo = document.querySelector('.todo');
     this.close = document.querySelector('.close');
     this.taskAll = document.querySelectorAll('.items-item');
     this.container = document.querySelector('.container');
+    this.select = document.querySelector('.select');
   }
 
-  createTask(value) {
+  createTask(value, status) {
     const task = document.createElement('li');
     const closeBtn = document.createElement('span');
     closeBtn.classList.add('close');
@@ -18,7 +19,13 @@ export default class Gui {
     task.classList.add('items-item');
     task.textContent = value;
     task.append(closeBtn);
-    this.todo.append(task);
+    this.cols.forEach((el) => {
+      const header = el.querySelector('.header');
+
+      if (header.textContent === status) {
+        el.querySelector('.items').append(task);
+      }
+    });
     return task;
   }
 
@@ -45,7 +52,7 @@ export default class Gui {
           if (col.children[0].innerText === title) {
             const ul = col.children[1];
             tasksList[title].forEach((li) => {
-              ul.append(this.createTask(li));
+              ul.append(this.createTask(li, title));
             });
           }
         });
