@@ -1,3 +1,5 @@
+import { getElementForInsert } from './function';
+
 export default class Logic {
   constructor(gui) {
     this.gui = gui;
@@ -57,17 +59,27 @@ export default class Logic {
   moveTask(itemsEl) {
     let draggedEl = null;
     let ghostEl = null;
+    let shiftX = null;
+    let shiftY = null;
+    let insertOption = null;
+    const insertElem = document.createElement('li');
+    insertElem.classList.add('place');
+    insertElem.classList.add('items-item');
+
     itemsEl.addEventListener('mousedown', (e) => {
       e.preventDefault();
       if (!e.target.classList.contains('items-item')) {
         return;
       }
+      shiftX = e.clientX - e.target.getBoundingClientRect().left;
+      shiftY = e.clientY - e.target.getBoundingClientRect().top;
       draggedEl = e.target;
+      insertOption = getElementForInsert(e.clientX, e.clientY);
       ghostEl = e.target.cloneNode(true);
       ghostEl.classList.add('dragged');
       document.body.appendChild(ghostEl);
-      ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
-      ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
+      ghostEl.style.left = `${e.pageX - shiftX}px`;
+      ghostEl.style.top = `${e.pageY - shiftY}px`;
     });
 
     itemsEl.addEventListener('mousemove', (e) => {
@@ -75,8 +87,10 @@ export default class Logic {
       if (!draggedEl) {
         return;
       }
-      ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
-      ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
+      insertOption = getElementForInsert(e.clientX, e.clientY);
+      insertOption.parent.insertBefore(insertElem, insertOption.child);
+      ghostEl.style.left = `${e.pageX - shiftX}px`;
+      ghostEl.style.top = `${e.pageY - shiftY}px`;
     });
     itemsEl.addEventListener('mouseleave', () => {
       if (!draggedEl) {
@@ -86,13 +100,13 @@ export default class Logic {
       ghostEl = null;
       draggedEl = null;
     });
-    itemsEl.addEventListener('mouseup', (e) => {
+    itemsEl.addEventListener('mouseup', () => {
       if (!draggedEl) {
         return;
       }
-      const closest = document.elementFromPoint(e.clientX, e.clientY);
-      if (closest.classList.contains('column')) {
-        closest.querySelector('.items').appendChild(draggedEl);
+      insertOption.parent.insertBefore(draggedEl, insertOption.child);
+      if (document.querySelector('.place')) {
+        insertOption.parent.removeChild(insertElem);
       }
       document.body.removeChild(ghostEl);
       localStorage.dragNdrops = JSON.stringify(this.gui.getTasksListObjFromDom());

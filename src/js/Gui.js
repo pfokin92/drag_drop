@@ -4,7 +4,6 @@ export default class Gui {
     this.itemsAll = document.querySelectorAll('.items');
     this.cols = document.querySelectorAll('.column');
     this.input = document.querySelector('.input');
-    // this.todo = document.querySelector('.todo');
     this.close = document.querySelector('.close');
     this.taskAll = document.querySelectorAll('.items-item');
     this.container = document.querySelector('.container');

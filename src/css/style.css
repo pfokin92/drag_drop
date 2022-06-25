@@ -43,6 +43,13 @@
     pointer-events: none;
 }
 
+.place {
+    width: 240px;
+    border-radius: 10px;
+    border: 1px solid #999;
+
+}
+
 .form {
     max-width: 200px;
     display: flex;
